@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact Form with CAPTCHA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      background-color: #f4f4f4;
+    }
+    
+    .container h2 {
+      text-align: center;
+    }
+    
+    .container input[type="text"],
+    .container textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    .container textarea {
+      height: 100px;
+    }
+    
+    .container input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      float: right;
+    }
+    
+    .container .captcha-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .container .captcha-container img {
+      margin-right: 10px;
+    }
+    
+    .container .error-message {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+  <script>
+    function generateCaptcha() {
+      var captcha = Math.random().toString(36).substring(2, 8);
+      document.getElementById('captcha-image').src = "https://dummyimage.com/150x50/000/fff&text=" + captcha;
+      document.getElementById('captcha-input').value = "";
+      return captcha;
+    }
+    
+    function validateForm() {
+      var captchaInput = document.getElementById('captcha-input').value;
+      var captchaImage = document.getElementById('captcha-image').getAttribute('src').split("=")[1];
+      if (captchaInput.toLowerCase() === captchaImage.toLowerCase()) {
+        alert("Form submitted successfully!");
+      } else {
+        document.getElementById('error-message').textContent = "Incorrect captcha. Please try again.";
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Contact Form</h2>
+    <form onsubmit="event.preventDefault(); validateForm();">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="text" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <div class="captcha-container">
+        <img id="captcha-image" src="https://dummyimage.com/150x50/000/fff&text=CAPTCHA" alt="CAPTCHA">
+        <a href="#" onclick="generateCaptcha();">Refresh</a>
+      </div>
+      <input type="text" id="captcha-input" placeholder="Enter CAPTCHA" required>
+      <div class="error-message" id="error-message"></div>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</body>
+</html>
